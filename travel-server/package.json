@@ -1,0 +1,45 @@
+{
+  "name": "inferno-squad-travel-system",
+  "version": "1.0.0",
+  "description": "System where user can obtain accurate information about their preferred travel destinations and add reviews.",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vishva-Jayasanka/inferno-squad-travel-system"
+  },
+  "email": "vishvajayasanka@gmail.com",
+  "author": "Vishwa Jayasanka <vishvajayasanka@gmail>",
+  "contributors": [
+    {
+      "name": "Chilanka Sudharaka",
+      "email": "chilankash@gmail.com "
+    },
+    {
+      "name": "Kavindu Katuwandeniya",
+      "email": "kavindu97@ieee.org"
+    },
+    {
+      "name": "Nethmi Bimsara",
+      "email": "nethmi1997bimsara@gmail.com"
+    }
+  ],
+  "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongodb": "^4.1.1",
+    "mongoose": "^6.0.5",
+    "mongoose-unique-validator": "^2.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12",
+    "morgan": "^1.10.0",
+    "passport": "^0.4.1"
+  }
+}
