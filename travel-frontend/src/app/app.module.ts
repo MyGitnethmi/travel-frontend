@@ -12,14 +12,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MaterialModule} from "./_material/material.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { SignupComponent } from './auth/signup/signup.component';
-
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,
