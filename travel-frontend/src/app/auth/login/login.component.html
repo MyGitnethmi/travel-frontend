@@ -1,0 +1,42 @@
+<h2 style="font-weight: 500; font-size: 24px" class="my-3">Login to you account</h2>
+
+<div>
+  <button type="button" (click)="loginWithGoogle()" style="display: flex; flex-direction: row;" class="btn btn-primary w-100 p-0">
+    <img style="width: 40px; height: 40px; background: white; margin: 2px 1px 1px 1px" class="rounded-1" src="assets/images/google-icon.png" alt="Google" />
+    <span style="line-height: 40px; text-align: center" class="w-100"><b>Log in with Google</b></span>
+  </button>
+</div>
+
+<p class="my-4" style="width: 100%; text-align: center; border-bottom: 1px solid lightgray; line-height: 0.1em; margin: 10px 0 20px;">
+  <span style="padding: 0 5px" class="bg-light">or</span>
+</p>
+
+<form>
+
+  <div class="alert alert-danger visually-hidden">
+    Pleas provide valid email address and a password.
+  </div>
+
+  <mat-form-field appearance="outline" class="col-12 mx-0">
+    <mat-label>Username</mat-label>
+    <input type="text" matInput placeholder="someone@example.com"/>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="col-12 mx-0">
+    <mat-label>Password</mat-label>
+    <input type="password" matInput/>
+  </mat-form-field>
+
+  <div class="row mx-0 mb-4 d-flex" style="text-align: end">
+    <a class="link-primary" style="cursor: pointer"><b>Forgot Password?</b></a>
+  </div>
+
+  <div class="row mx-0">
+     <button class="btn btn-success w-100">Login</button>
+  </div>
+
+  <div class="wor mx-0 mt-4 mb-2" style="text-align: center">
+    <p>Don't have an account? <a class="link-primary" style="cursor: pointer"><b>Sign Up</b></a></p>
+  </div>
+
+</form>

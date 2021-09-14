@@ -1,0 +1,4 @@
+.cover {
+  background: url("src/assets/images/cover.png") center;
+  background-size: cover;
+}
