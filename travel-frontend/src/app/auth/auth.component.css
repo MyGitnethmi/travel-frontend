@@ -1,4 +1,4 @@
 .cover {
-  background: url("src/assets/images/cover.png") center;
+  background: url("src/assets/images/cover.jpg") left top;
   background-size: cover;
 }

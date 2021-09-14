@@ -11,20 +11,29 @@
   <span style="padding: 0 5px" class="bg-light">or</span>
 </p>
 
-<form>
+<form [formGroup]="loginForm">
 
   <div class="alert alert-danger visually-hidden">
     Pleas provide valid email address and a password.
   </div>
 
   <mat-form-field appearance="outline" class="col-12 mx-0">
-    <mat-label>Username</mat-label>
-    <input type="text" matInput placeholder="someone@example.com"/>
+    <mat-label>Email Address</mat-label>
+    <input type="text" matInput placeholder="someone@example.com" autocomplete="username" formControlName="username" />
+    <mat-error *ngIf="username && username.errors?.required">Please enter the username.</mat-error>
+    <mat-error *ngIf="username && !username.errors?.required && username.errors?.email">Please enter a valid email.</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="col-12 mx-0">
     <mat-label>Password</mat-label>
-    <input type="password" matInput/>
+    <input [attr.type]="passwordVisible ? 'text' : 'password'" matInput autocomplete="current-password" formControlName="password" />
+    <button *ngIf="password && password.value" type="button" matSuffix mat-icon-button aria-label="Show/Hide password" (click)="passwordVisible = !passwordVisible">
+      <mat-icon *ngIf="passwordVisible; else visibilityOff">visibility_off</mat-icon>
+      <ng-template #visibilityOff>
+        <mat-icon>visibility</mat-icon>
+      </ng-template>
+    </button>
+    <mat-error *ngIf="password && password.touched && password.errors?.required">Please enter the password.</mat-error>
   </mat-form-field>
 
   <div class="row mx-0 mb-4 d-flex" style="text-align: end">
