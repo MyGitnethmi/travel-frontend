@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {SocialAuthService, GoogleLoginProvider} from 'angularx-social-login';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "../../_services/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private socialAuthService: SocialAuthService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private auth: AuthService
   ) {
 
     this.loginForm = this.formBuilder.group({
@@ -36,6 +38,19 @@ export class LoginComponent implements OnInit {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(user => {
       console.log(user);
     });
+  }
+
+  login(): void {
+    if (this.loginForm.valid) {
+      this.auth.login(this.loginForm.value).subscribe(
+        response => {
+          console.log(response);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
   }
 
   get username(): AbstractControl | null {

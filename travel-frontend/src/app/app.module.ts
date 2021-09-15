@@ -1,18 +1,20 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
-import { GoogleLoginProvider } from 'angularx-social-login';
+import {SocialLoginModule, SocialAuthServiceConfig} from 'angularx-social-login';
+import {GoogleLoginProvider} from 'angularx-social-login';
 
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { AuthComponent } from './auth/auth.component';
-import { LoginComponent } from './auth/login/login.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AppComponent} from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AuthComponent} from './auth/auth.component';
+import {LoginComponent} from './auth/login/login.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from "./_material/material.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { SignupComponent } from './auth/signup/signup.component';
-import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import {SignupComponent} from './auth/signup/signup.component';
+import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
+import {HomeComponent} from './home/home.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     AuthComponent,
     LoginComponent,
     SignupComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,8 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    SocialLoginModule
+    SocialLoginModule,
+    HttpClientModule
   ],
   providers: [
     {
@@ -49,4 +53,5 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
