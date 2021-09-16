@@ -5,6 +5,8 @@ const morgan = require('morgan');
 const _ = require('lodash');
 const mongoose = require('mongoose');
 
+const {databaseURI} = require("./config");
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -15,8 +17,7 @@ app.use(morgan('dev'));
 
 app.use('/public', express.static(__dirname + '\\public'));
 
-const uri = `mongodb+srv://vishwa:Intelh61m@travel-database.a94mt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-mongoose.connect(uri, {useUnifiedTopology: true, useNewUrlParser: true}, error => {
+mongoose.connect(databaseURI, {useUnifiedTopology: true, useNewUrlParser: true}, error => {
   if (error) {
     console.log(error);
   } else {

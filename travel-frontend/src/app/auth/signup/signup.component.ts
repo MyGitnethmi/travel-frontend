@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
+
+import {AuthService} from "../../_services/auth.service";
+import {environment} from "../../../environments/environment.prod";
+import {UtilityService} from "../../_services/utility.service";
 
 @Component({
   selector: 'app-signup',
@@ -10,17 +15,24 @@ export class SignupComponent implements OnInit {
 
   signupForm: FormGroup;
   passwordVisible: boolean = false;
+  agreementError: boolean = false;
+  error: string = '';
+  progress: boolean = false;
 
   constructor(
-    private formBuilder: FormBuilder
+    private auth: AuthService,
+    private elementRef: ElementRef,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private utility: UtilityService
   ) {
     this.signupForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.email]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.pattern(/[A-Za-z]+/)]],
-      district: ['', [Validators.required]],
-      agreement: [false, Validators.required]
+      username: ['vshwjayasanka@gmail.com', [Validators.required, Validators.email]],
+      firstName: ['Vishwa', [Validators.required]],
+      lastName: ['Jayasanka', [Validators.required]],
+      password: ['Vishwa1235#', [Validators.required, Validators.pattern(environment.passwordValidator)]],
+      phone: ['719251862', [Validators.required, Validators.pattern(environment.phoneValidator)]],
+      agreement: [false, Validators.requiredTrue]
     });
   }
 
@@ -28,7 +40,26 @@ export class SignupComponent implements OnInit {
   }
 
   signup(): void {
-    console.log(this.signupForm.value);
+    this.error = '';
+    if (this.signupForm.valid) {
+      this.progress = true;
+      this.auth.signUp(this.signupForm.value).subscribe(
+        response => {
+          console.log(response);
+          this.router.navigate(['/'])
+        },
+        error => {
+          if (error?.name === 'ValidationError') {
+            this.username?.setErrors({emailExists: true});
+            this.utility.scrollToFirstInvalidControl(this.elementRef);
+          } else {
+            this.error = error;
+          }
+        }
+      ).add(() => this.progress = false);
+    } else if (this.agreement?.invalid) {
+      this.agreementError = true;
+    }
   }
 
   checkPasswordLength(): boolean | null {
@@ -59,8 +90,12 @@ export class SignupComponent implements OnInit {
     return this.signupForm.get('password');
   }
 
-  get district(): AbstractControl | null {
-    return this.signupForm.get('district');
+  get phone(): AbstractControl | null {
+    return this.signupForm.get('phone');
+  }
+
+  get agreement(): AbstractControl | null {
+    return this.signupForm.get('agreement');
   }
 
 }

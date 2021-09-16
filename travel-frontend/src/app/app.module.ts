@@ -14,7 +14,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SignupComponent} from './auth/signup/signup.component';
 import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
 import {HomeComponent} from './home/home.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {TokenInterceptor} from "./_helpers/token.interceptor";
+import {ErrorInterceptor} from "./_helpers/error.interceptor";
 
 @NgModule({
   declarations: [
@@ -36,6 +38,16 @@ import {HttpClientModule} from "@angular/common/http";
     HttpClientModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

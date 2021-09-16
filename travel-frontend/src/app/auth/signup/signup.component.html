@@ -13,26 +13,27 @@
 
 <form [formGroup]="signupForm" (ngSubmit)="signup()">
 
-  <mat-form-field appearance="outline" class="col-12 mx-0">
+  <mat-form-field appearance="outline" class="col-12 mx-0 mb-2">
     <mat-label>Email</mat-label>
     <input type="text" matInput formControlName="username" placeholder="someone@example.com" autocomplete="email"/>
     <mat-error *ngIf="username && username.touched && username.errors?.required">Please enter an email address.</mat-error>
     <mat-error *ngIf="username && username.touched && !username.errors?.required && username.errors?.email">Please enter a valid email address.</mat-error>
+    <mat-error *ngIf="username && !username.errors?.require && !username.errors?.email && username.errors?.emailExists">An account with this email address already exists.</mat-error>
   </mat-form-field>
 
-  <mat-form-field appearance="outline" class="col-12 mx-0">
+  <mat-form-field appearance="outline" class="col-12 mx-0 mb-2">
     <mat-label>First Name</mat-label>
     <input type="text" matInput formControlName="firstName" autocomplete="given-name"/>
     <mat-error *ngIf="firstName && firstName.touched && firstName.errors?.required">Please enter your first name.</mat-error>
   </mat-form-field>
 
-  <mat-form-field appearance="outline" class="col-12 mx-0">
+  <mat-form-field appearance="outline" class="col-12 mx-0 mb-2">
     <mat-label>Last Name</mat-label>
     <input type="text" matInput formControlName="lastName" autocomplete="family-name"/>
     <mat-error *ngIf="lastName && lastName.touched && lastName.errors?.required">Please enter your last name.</mat-error>
   </mat-form-field>
 
-  <mat-form-field appearance="outline" class="col-12 mx-0">
+  <mat-form-field appearance="outline" class="col-12 mx-0 mb-2">
     <mat-label>Password</mat-label>
     <input [attr.type]="passwordVisible ? 'text' : 'password'" matInput formControlName="password" autocomplete="new-password"/>
     <button *ngIf="password && password.value" type="button" matSuffix mat-icon-button aria-label="Show/Hide password" (click)="passwordVisible = !passwordVisible">
@@ -54,25 +55,30 @@
     </ul>
   </div>
 
-  <mat-form-field appearance="outline" class="col-12 mx-0">
-    <mat-label>District</mat-label>
-    <mat-select formControlName="district">
-      <mat-option value="matara">Matara</mat-option>
-      <mat-option value="galle">Galle</mat-option>
-      <mat-option value="colombo">Colombo</mat-option>
-      <mat-option value="habmantota">Hambantota</mat-option>
-    </mat-select>
-    <mat-error *ngIf="district && district.touched && district.errors?.required">Please select your district.</mat-error>
+  <mat-form-field appearance="fill" floatLabel="always" class="col-12 mx-0 mb-2">
+    <mat-label>Phone</mat-label>
+    <input type="text" matInput formControlName="phone" autocomplete="tel-local">
+    <span matPrefix style="line-height: 10px">+94&nbsp;</span>
+    <mat-error *ngIf="phone && phone.touched && phone.errors?.required">Please enter your phone number.</mat-error>
+    <mat-error *ngIf="phone && phone.touched && !phone.errors?.required && phone.errors?.pattern">Please enter a valid phone number</mat-error>
   </mat-form-field>
 
-  <div class="mx-0">
-    <mat-checkbox formControlName="agreement" color="primary">
-      I accept the <a class="link-primary"><b>Terms of Service</b></a>.
+  <div class="mx-0" id="agreement">
+    <mat-checkbox formControlName="agreement" color="primary" >
+      accept the <a class="link-primary"><b>Terms of Service</b></a>
     </mat-checkbox>
   </div>
 
+  <p *ngIf="agreementError && agreement?.invalid" class="text-danger">Please agree to the terms of service.</p>
+
+  <div *ngIf="error" class="message message-error mt-3">
+    <mat-icon class="message-icon message-icon-error">error</mat-icon> {{ error }}
+  </div>
+
   <div class="row mx-0 my-4">
-    <button class="btn btn-success w-100" type="submit">Sign Up</button>
+    <button class="btn btn-success w-100" type="submit">
+      <span *ngIf="progress" class="spinner-border spinner-border-sm"></span> Sign Up
+    </button>
   </div>
 
   <div class="wor mx-0 mt-4 mb-2" style="text-align: center">

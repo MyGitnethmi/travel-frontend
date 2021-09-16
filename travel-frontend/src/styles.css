@@ -1,5 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
 
+.message {
+  width: 100%;
+  padding: 10px;
+}
+
+.message-warning {
+  background: rgb(255, 250, 230);
+  border: 1px solid rgb(255, 225, 140);
+}
+
+.message-error {
+  background: rgb(255, 240, 240);
+  border: 1px solid rgb(255, 200, 200);
+}
+
+.message-icon {
+  vertical-align: -6px;
+  margin-right: 5px;
+}
+
+.message-icon-warning {
+  color: rgb(250, 170, 20);
+}
+
+.message-icon-error {
+  color: rgb(250, 80, 80);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
