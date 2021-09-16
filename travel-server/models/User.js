@@ -8,10 +8,13 @@ const secret = require('../config/index').secret;
 
 const UserSchema = new mongoose.Schema({
   username: {type: String, required: [true, 'cannot be blank'], unique: true, validate: /\S+@\S+\.\S+/},
-  hash: {type: String},
+  auth: {
+    method: {type: String, required: [true, 'cannot be blank'], validate: /^(password)|(google)$/},
+    hash: {type: String}
+  },
   firstName: {type: String, required: [true, 'cannot be blank']},
   lastName: {type: String, required: [true, 'cannot be blank']},
-  phone: {type: String, required: [true, 'cannot be blank'], validate: /^((\+94)|0)?\d{9}$/},
+  phone: {type: String, validate: /^((\+94)|0)?\d{9}$/},
   avatar: {
     thumbnail: {type: String},
     original: {type: String}
@@ -23,12 +26,13 @@ UserSchema.index({username: 1}, {unique: true});
 UserSchema.plugin(uniqueValidator, {message: 'is already taken'});
 
 UserSchema.methods.validPassword = function (password) {
-  return bcrypt.compare(password, this.hash)
+  return bcrypt.compare(password, this.auth.hash);
 }
 
 UserSchema.methods.setPassword = function (password) {
   bcrypt.hash(password, 10).then(hash => {
-    this.hash = hash;
+    this.auth.method = 'normal';
+    this.auth.hash = hash;
   });
 }
 

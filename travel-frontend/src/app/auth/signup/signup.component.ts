@@ -44,8 +44,7 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.valid) {
       this.progress = true;
       this.auth.signUp(this.signupForm.value).subscribe(
-        response => {
-          console.log(response);
+        () => {
           this.router.navigate(['/'])
         },
         error => {
@@ -60,6 +59,22 @@ export class SignupComponent implements OnInit {
     } else if (this.agreement?.invalid) {
       this.agreementError = true;
     }
+  }
+
+  loginWithGoogle(): void {
+    this.error = '';
+    this.auth.signUpWithGoogle().then(httpResponse => {
+      httpResponse.subscribe(
+        () => {
+          this.router.navigate(['/']);
+        },
+        error => this.error = error
+      )
+    });
+  }
+
+  signOut(): void {
+    this.auth.logOut();
   }
 
   checkPasswordLength(): boolean | null {

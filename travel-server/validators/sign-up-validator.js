@@ -1,11 +1,12 @@
 const joi = require('joi');
+const {phoneValidator, passwordValidator} = require("../config");
 
 const signUpSchema = joi.object({
   username: joi.string().email().required(),
   firstName: joi.string().required(),
   lastName: joi.string().required(),
-  password: joi.string().regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}/).required(),
-  phone: joi.string().regex(/^((\+94)|0)?\d{9}$/),
+  password: joi.string().regex(passwordValidator).required(),
+  phone: joi.string().regex(phoneValidator),
   agreement: joi.boolean().equal(true)
 });
 
