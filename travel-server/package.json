@@ -39,6 +39,8 @@
     "mongodb": "^4.1.1",
     "mongoose": "^6.0.5",
     "mongoose-unique-validator": "^2.0.3",
+    "nodemailer": "^6.6.3",
+    "pug": "^3.0.2",
     "sharp": "^0.29.1"
   },
   "devDependencies": {

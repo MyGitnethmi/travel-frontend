@@ -1,19 +1,18 @@
 const {OAuth2Client} = require('google-auth-library');
-const passport = require('passport');
 const router = require('express').Router();
 const mongoose = require('mongoose');
+const pug = require('pug');
 
 const User = mongoose.model('User');
 
 const googleAuth = require('../../config/google-util');
 const ValidateSignup = require('../../validators/sign-up-validator');
 const ValidLogin = require('../../validators/login-validator');
+const LinkGoogle = require('../../validators/link-google-validator');
 
 const client = new OAuth2Client(googleAuth.clientSecret);
 
 router.post('/login', (request, response) => {
-
-  console.log(request.body);
 
   const credentials = request.body;
 
@@ -27,8 +26,6 @@ router.post('/login', (request, response) => {
   }
 
   User.findOne({username: credentials.username}).then(user => {
-
-    console.log(user);
 
     if (!user || user.auth.method === 'google') {
       return response.status(400).send({
@@ -106,7 +103,6 @@ router.post('/sign-up', (request, response) => {
 
 router.post('/google-sign-in', async (request, response) => {
 
-
   const ticket = await client.verifyIdToken({
     idToken: request.body.idToken,
     audience: googleAuth.clientId
@@ -146,11 +142,24 @@ router.post('/google-sign-in', async (request, response) => {
 
       User.findOne({username: userDetails.email}).then(user => {
 
-        response.status(200).send({
-          status: true,
-          message: 'This account is already registered..!',
-          user: user.toAuthJSON()
-        });
+        if (user.auth.method === 'google') {
+
+          response.status(200).send({
+            status: true,
+            message: 'This account is already registered..!',
+            user: user.toAuthJSON()
+          });
+
+        } else {
+
+          response.status(409).send({
+            status: false,
+            message: userDetails.email
+          });
+
+          console.log(userDetails.email);
+
+        }
 
       }).catch(() => {
 
@@ -164,6 +173,97 @@ router.post('/google-sign-in', async (request, response) => {
     }
 
   });
+
+});
+
+router.post('/link-google', async (request, response) => {
+
+  const userData = request.body;
+
+  const value = LinkGoogle.validate(userData);
+
+  if (value.error) {
+    return response.status(400).send({
+      status: false,
+      message: value.error.details
+    });
+  }
+
+  const ticket = await client.verifyIdToken({
+    idToken: request.body.idToken,
+    audience: googleAuth.clientId
+  });
+
+  const userDetails = ticket.getPayload();
+
+  User.findOne({username: userDetails.email}).then(user => {
+
+    if (!user) {
+      return response.status(400).send({
+        status: false,
+        message: 'User not found..!'
+      });
+    }
+
+    user.validPassword(userData.password).then(valid => {
+
+      if (!valid) {
+        return response.status(400).send({
+          status: false,
+          message: 'Password is incorrect..!'
+        });
+      }
+
+      user.auth = {method: 'google'}
+      user.save().then(() => {
+
+        response.status(200).send({
+          status: true,
+          message: 'Authentication method updated to Google successfully..!',
+          user: user.toAuthJSON()
+        });
+
+      }).catch(() => {
+
+        response.status(500).send({
+          status: false,
+          message: 'An unknown error occurred..!'
+        });
+
+      });
+
+    }).catch(() => {
+
+      response.status(500).send({
+        status: false,
+        message: 'An unknown error occurred..!'
+      });
+
+    });
+
+  }).catch(() => {
+
+    response.status(500).send({
+      status: false,
+      message: 'An unknown error occurred..!'
+    });
+
+  });
+
+});
+
+router.get('/send-password-reset-email', (request, response) => {
+
+  console.log(request.body);
+
+  const passwordResetTemplate = pug.compileFile('./templates/password-reset-email.pug');
+
+  response.status(200).send(passwordResetTemplate({
+    firstName: 'Vishwa',
+    lastName: 'Jayasanka',
+    username: 'vishvajayasanka@gmail.com',
+    token: 'kadbkjbuK.sdjnkf327yfw. kfbabfuweaf'
+  }));
 
 });
 

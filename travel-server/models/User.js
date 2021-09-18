@@ -9,7 +9,7 @@ const secret = require('../config/index').secret;
 const UserSchema = new mongoose.Schema({
   username: {type: String, required: [true, 'cannot be blank'], unique: true, validate: /\S+@\S+\.\S+/},
   auth: {
-    method: {type: String, required: [true, 'cannot be blank'], validate: /^(password)|(google)$/},
+    method: {type: String, required: [true, 'cannot be blank'], enum: ['google', 'normal']},
     hash: {type: String}
   },
   firstName: {type: String, required: [true, 'cannot be blank']},
@@ -18,7 +18,8 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     thumbnail: {type: String},
     original: {type: String}
-  }
+  },
+  role: {type: String, required: [true, 'cannot be blank'], default: 'user', enum: ['admin', 'user']}
 }, {timestamps: true});
 
 UserSchema.index({username: 1}, {unique: true});
@@ -26,7 +27,7 @@ UserSchema.index({username: 1}, {unique: true});
 UserSchema.plugin(uniqueValidator, {message: 'is already taken'});
 
 UserSchema.methods.validPassword = function (password) {
-  return bcrypt.compare(password, this.auth.hash);
+  return bcrypt.compare(password, this.auth.method === 'normal' ? this.auth.hash : '');
 }
 
 UserSchema.methods.setPassword = function (password) {
@@ -51,6 +52,7 @@ UserSchema.methods.toAuthJSON = function () {
     firstName: this.firstName,
     lastName: this.lastName,
     token: this.generateJWT(),
+    role: this.role,
     avatar: this.avatar.thumbnail
   }
 }
