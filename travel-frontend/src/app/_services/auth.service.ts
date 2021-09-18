@@ -20,7 +20,6 @@ export class AuthService {
 
   setUser(response: any): CurrentUser {
     const currentUser: CurrentUser = response.user;
-    console.log(response);
     if (currentUser?.token) {
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
     }
@@ -29,7 +28,6 @@ export class AuthService {
 
   login(credentials: object): Observable<any> {
     return this.http.post<any>(`${environment.api}/auth/login`, credentials).pipe(map(response => {
-      console.log(response);
       return this.setUser(response);
     }));
   }
@@ -40,18 +38,43 @@ export class AuthService {
     }));
   }
 
-  async signUpWithGoogle(): Promise<Observable<any>> {
-    const user: SocialUser = await this.socialAuth.signIn(GoogleLoginProvider.PROVIDER_ID);
+  getGoogleUser(): Promise<SocialUser> {
+    return this.socialAuth.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  googleSignIn(user: SocialUser): Observable<any> {
     return this.http.post<any>(`${environment.api}/auth/google-sign-in`, user).pipe(map(response => {
       return this.setUser(response);
     }));
+  }
+
+  linkGoogleAccount(user: object): Observable<any> {
+    return this.http.post<any>(`${environment.api}/auth/link-google`, user).pipe(map(response => {
+      return this.setUser(response);
+    }));
+  }
+
+  sendPasswordResetEmail(email: string): Observable<any> {
+    return this.http.post<any>(`${environment.api}/auth/send-password-reset-email`, {email});
   }
 
   logOut(): void {
     this.socialAuth.signOut().then(() => {
         console.log('signed out..!')
       }
-    )
+    );
+  }
+
+  get details(): CurrentUser | null {
+    try {
+      return JSON.parse(<string>localStorage.getItem('currentUser'));
+    } catch (error) {
+      return null;
+    }
+  }
+
+  get token(): string | undefined {
+      return this.details?.token;
   }
 
 }

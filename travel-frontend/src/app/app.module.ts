@@ -15,8 +15,9 @@ import {SignupComponent} from './auth/signup/signup.component';
 import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
 import {HomeComponent} from './home/home.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {TokenInterceptor} from "./_helpers/token.interceptor";
-import {ErrorInterceptor} from "./_helpers/error.interceptor";
+import {TokenInterceptor} from "./_interceptors/token.interceptor";
+import {ErrorInterceptor} from "./_interceptors/error.interceptor";
+import { LinkGoogleComponent } from './auth/link-google/link-google.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {ErrorInterceptor} from "./_helpers/error.interceptor";
     LoginComponent,
     SignupComponent,
     ResetPasswordComponent,
-    HomeComponent
+    HomeComponent,
+    LinkGoogleComponent
   ],
   imports: [
     BrowserModule,

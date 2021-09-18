@@ -16,8 +16,12 @@ export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   passwordVisible: boolean = false;
   agreementError: boolean = false;
+
   error: string = '';
   progress: boolean = false;
+
+  googleError: string = '';
+  googleProgress: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -27,11 +31,11 @@ export class SignupComponent implements OnInit {
     private utility: UtilityService
   ) {
     this.signupForm = this.formBuilder.group({
-      username: ['vshwjayasanka@gmail.com', [Validators.required, Validators.email]],
-      firstName: ['Vishwa', [Validators.required]],
-      lastName: ['Jayasanka', [Validators.required]],
-      password: ['Vishwa1235#', [Validators.required, Validators.pattern(environment.passwordValidator)]],
-      phone: ['719251862', [Validators.required, Validators.pattern(environment.phoneValidator)]],
+      username: ['', [Validators.required, Validators.email]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.pattern(environment.passwordValidator)]],
+      phone: ['', [Validators.required, Validators.pattern(environment.phoneValidator)]],
       agreement: [false, Validators.requiredTrue]
     });
   }
@@ -41,6 +45,7 @@ export class SignupComponent implements OnInit {
 
   signup(): void {
     this.error = '';
+    this.googleError = '';
     if (this.signupForm.valid) {
       this.progress = true;
       this.auth.signUp(this.signupForm.value).subscribe(
@@ -48,29 +53,38 @@ export class SignupComponent implements OnInit {
           this.router.navigate(['/'])
         },
         error => {
-          if (error?.name === 'ValidationError') {
+          if (error?.message.name === 'ValidationError') {
             this.username?.setErrors({emailExists: true});
             this.utility.scrollToFirstInvalidControl(this.elementRef);
           } else {
-            this.error = error;
+            this.error = error.message;
           }
         }
       ).add(() => this.progress = false);
     } else if (this.agreement?.invalid) {
+      this.agreementError = true;
       this.agreementError = true;
     }
   }
 
   loginWithGoogle(): void {
     this.error = '';
-    this.auth.signUpWithGoogle().then(httpResponse => {
-      httpResponse.subscribe(
+    this.googleError = '';
+    this.googleProgress = true;
+    this.auth.getGoogleUser().then(user => {
+      this.auth.googleSignIn(user).subscribe(
         () => {
           this.router.navigate(['/']);
         },
-        error => this.error = error
-      )
-    });
+        error => {
+          if (error.status === 409) {
+            this.googleError = 'Account already exists. Please login';
+          } else {
+            this.googleError = 'An unknown error occurred..!';
+          }
+        }
+      ).add(() => this.googleProgress = false);
+    }).finally(() => this.googleProgress = false);
   }
 
   signOut(): void {

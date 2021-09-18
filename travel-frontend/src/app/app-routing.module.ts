@@ -4,8 +4,14 @@ import {AuthComponent} from "./auth/auth.component";
 import {LoginComponent} from "./auth/login/login.component";
 import {SignupComponent} from "./auth/signup/signup.component";
 import {ResetPasswordComponent} from "./auth/reset-password/reset-password.component";
+import {LinkGoogleComponent} from "./auth/link-google/link-google.component";
+import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent
+  },
   {
     path: 'auth',
     component: AuthComponent,
@@ -21,6 +27,14 @@ const routes: Routes = [
       {
         path: 'reset-password',
         component: ResetPasswordComponent
+      },
+      {
+        path: 'link-google',
+        component: LinkGoogleComponent
+      },
+      {
+        path: 'link-google/:email',
+        component: LinkGoogleComponent
       },
       {
         path: '',

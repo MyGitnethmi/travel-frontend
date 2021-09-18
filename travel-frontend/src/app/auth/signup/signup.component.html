@@ -3,8 +3,15 @@
 <div>
   <button type="button" (click)="loginWithGoogle()" style="display: flex; flex-direction: row;" class="btn btn-primary w-100 p-0">
     <img style="width: 40px; height: 40px; background: white; margin: 2px 1px 1px 1px" class="rounded-1" src="assets/images/google-icon.png" alt="Google"/>
-    <span style="line-height: 40px; text-align: center" class="w-100"><b>Sign up with Google</b></span>
+    <span style="line-height: 40px; text-align: center" class="w-100">
+      <span *ngIf="googleProgress" class="spinner-border spinner-border-sm"></span>
+      &nbsp;&nbsp;<b>Sign Up with Google</b>
+    </span>
   </button>
+</div>
+
+<div *ngIf="googleError" class="message message-error my-3">
+  <mat-icon class="message-icon message-icon-error">error</mat-icon> {{ googleError }}
 </div>
 
 <p class="my-4" style="width: 100%; text-align: center; border-bottom: 1px solid lightgray; line-height: 0.1em; margin: 10px 0 20px;">
