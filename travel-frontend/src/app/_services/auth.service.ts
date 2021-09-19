@@ -54,8 +54,14 @@ export class AuthService {
     }));
   }
 
-  sendPasswordResetEmail(email: string): Observable<any> {
-    return this.http.post<any>(`${environment.api}/auth/send-password-reset-email`, {email});
+  sendPasswordResetEmail(username: string): Observable<any> {
+    return this.http.post<any>(`${environment.api}/auth/send-password-reset-email`, {username});
+  }
+
+  resetPassword(data: object): Observable<any> {
+    return this.http.post<any>(`${environment.api}/auth/reset-password`, data).pipe(map(response => {
+      return this.setUser(response);
+    }));
   }
 
   logOut(): void {

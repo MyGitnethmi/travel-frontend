@@ -1,0 +1,8 @@
+// email footer template
+
+mixin footer(first_name, last_name)
+    tr(style="background: rgb(230, 245, 230); border: 2px solid rgb(195, 230, 200);")
+        td(colSpan="3" style="text-align: center; padding: 10px; font-size: 14px")
+            p(style="margin-bottom: 5px") This email was intended fo #{first_name} #{last_name} (Student at University of Moratuwa)
+            img(src="http://localhost:3000/public/logo.png" alt="UoM" style="width: 32px; height: 35px")
+            p(style="margin-top: 5px") Copyright © 2020 University of Moratuwa. All rights Reserved.

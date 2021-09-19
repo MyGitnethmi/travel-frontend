@@ -10,7 +10,8 @@ const UserSchema = new mongoose.Schema({
   username: {type: String, required: [true, 'cannot be blank'], unique: true, validate: /\S+@\S+\.\S+/},
   auth: {
     method: {type: String, required: [true, 'cannot be blank'], enum: ['google', 'normal']},
-    hash: {type: String}
+    hash: {type: String},
+    token: {type: String}
   },
   firstName: {type: String, required: [true, 'cannot be blank']},
   lastName: {type: String, required: [true, 'cannot be blank']},

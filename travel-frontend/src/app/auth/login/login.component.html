@@ -20,10 +20,6 @@
 
 <form [formGroup]="loginForm">
 
-  <div class="alert alert-danger visually-hidden">
-    Pleas provide valid email address and a password.
-  </div>
-
   <mat-form-field appearance="outline" class="col-12 mx-0">
     <mat-label>Email Address</mat-label>
     <input type="text" matInput placeholder="someone@example.com" autocomplete="username" formControlName="username" />
@@ -42,7 +38,7 @@
   </mat-form-field>
 
   <div class="row mx-0 mb-4 d-flex" style="text-align: end">
-    <a class="link-primary" style="cursor: pointer" [routerLink]="['../reset-password', {email: username?.value}]"><b>Forgot Password?</b></a>
+    <a class="link-primary" style="cursor: pointer" [routerLink]="['../reset-password-request', {email: username?.value}]"><b>Forgot Password?</b></a>
   </div>
 
   <div *ngIf="error" class="message message-error mb-3">

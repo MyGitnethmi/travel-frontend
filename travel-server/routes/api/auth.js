@@ -5,19 +5,20 @@ const pug = require('pug');
 
 const User = mongoose.model('User');
 
+const transporter = require('../../config/mail-config');
+
 const googleAuth = require('../../config/google-util');
 const ValidateSignup = require('../../validators/sign-up-validator');
 const ValidLogin = require('../../validators/login-validator');
 const LinkGoogle = require('../../validators/link-google-validator');
+const PasswordResetSchema = require('../../validators/reset-password-validator');
 
 const client = new OAuth2Client(googleAuth.clientSecret);
 
 router.post('/login', (request, response) => {
 
   const credentials = request.body;
-
   const value = ValidLogin.validate(credentials);
-
   if (value.error) {
     return response.status(400).send({
       status: false,
@@ -63,9 +64,7 @@ router.post('/login', (request, response) => {
 router.post('/sign-up', (request, response) => {
 
   const userData = request.body;
-
   const value = ValidateSignup.validate(userData);
-
   if (value.error) {
     return response.status(400).send({
       status: false,
@@ -91,12 +90,10 @@ router.post('/sign-up', (request, response) => {
     });
 
   }).catch(error => {
-
     return response.status(400).send({
       status: false,
       message: error
     });
-
   });
 
 });
@@ -107,7 +104,6 @@ router.post('/google-sign-in', async (request, response) => {
     idToken: request.body.idToken,
     audience: googleAuth.clientId
   });
-
   const userDetails = ticket.getPayload()
 
   User.count({username: userDetails.email}).then(count => {
@@ -162,12 +158,10 @@ router.post('/google-sign-in', async (request, response) => {
         }
 
       }).catch(() => {
-
         return response.status(500).send({
           status: false,
           message: 'An unknown error occurred..!'
         });
-
       });
 
     }
@@ -179,9 +173,7 @@ router.post('/google-sign-in', async (request, response) => {
 router.post('/link-google', async (request, response) => {
 
   const userData = request.body;
-
   const value = LinkGoogle.validate(userData);
-
   if (value.error) {
     return response.status(400).send({
       status: false,
@@ -233,37 +225,110 @@ router.post('/link-google', async (request, response) => {
       });
 
     }).catch(() => {
-
       response.status(500).send({
         status: false,
         message: 'An unknown error occurred..!'
       });
-
     });
 
   }).catch(() => {
-
     response.status(500).send({
       status: false,
       message: 'An unknown error occurred..!'
     });
-
   });
 
 });
 
-router.get('/send-password-reset-email', (request, response) => {
+router.post('/send-password-reset-email', async (request, response) => {
 
-  console.log(request.body);
+  const username = request.body.username;
+  if (!username) {
+    response.status(400).send({
+      status: false,
+      message: 'Username is required..!'
+    });
+  }
 
-  const passwordResetTemplate = pug.compileFile('./templates/password-reset-email.pug');
+  try {
 
-  response.status(200).send(passwordResetTemplate({
-    firstName: 'Vishwa',
-    lastName: 'Jayasanka',
-    username: 'vishvajayasanka@gmail.com',
-    token: 'kadbkjbuK.sdjnkf327yfw. kfbabfuweaf'
-  }));
+    const user = await User.findOne({username})
+
+    if (!user) {
+      return response.status(401).send({
+        status: false,
+        message: 'Invalid username..!'
+      });
+    }
+
+    const passwordResetTemplate = pug.compileFile('./templates/password-reset-email.pug');
+
+    const token = user.generateJWT();
+
+    const emailBody = passwordResetTemplate({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      avatar: user.avatar.thumbnail,
+      token
+    });
+
+    const mailOptions = {
+      from: 'vishvajayasanka@gmail.com',
+      to: user.username,
+      subject: 'GoPedia Password Reset',
+      html: emailBody
+    }
+
+    await transporter.sendMail(mailOptions);
+
+    user.auth.token = token;
+
+    await user.save();
+
+    response.status(200).send({
+      status: true,
+      message: 'Email sent successfully..!'
+    });
+
+  } catch (error) {
+    response.status(500).send({
+      message: 'An unknown error occurred..!'
+    });
+  }
+
+});
+
+router.post('/reset-password', async (request, response) => {
+
+  const userData = request.body;
+  const value = PasswordResetSchema.validate(userData);
+  if (value.error) {
+    return response.status(400).send({
+      status: false,
+      message: value.error.details
+    });
+  }
+
+  try {
+
+    const user = await User.findOne({username: userData.username, 'auth.token': userData.token});
+
+    if (!user) {
+      return response.status(401).send({
+        status: false,
+        message: 'Username does not match the requested account username'
+      });
+    }
+
+    // Validate token
+
+  } catch (error) {
+    response.status(500).send({
+      status: false,
+      message: 'An unknown error occurred..!'
+    });
+  }
 
 });
 

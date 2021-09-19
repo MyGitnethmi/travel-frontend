@@ -27,8 +27,7 @@ export class SignupComponent implements OnInit {
     private auth: AuthService,
     private elementRef: ElementRef,
     private formBuilder: FormBuilder,
-    private router: Router,
-    private utility: UtilityService
+    private router: Router
   ) {
     this.signupForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.email]],
@@ -55,7 +54,7 @@ export class SignupComponent implements OnInit {
         error => {
           if (error?.message.name === 'ValidationError') {
             this.username?.setErrors({emailExists: true});
-            this.utility.scrollToFirstInvalidControl(this.elementRef);
+            UtilityService.scrollToFirstInvalidControl(this.elementRef);
           } else {
             this.error = error.message;
           }

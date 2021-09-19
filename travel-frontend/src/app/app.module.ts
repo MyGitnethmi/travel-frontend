@@ -12,12 +12,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from "./_material/material.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SignupComponent} from './auth/signup/signup.component';
-import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
+import {ResetPasswordRequestComponent} from './auth/reset-password-request/reset-password-request.component';
 import {HomeComponent} from './home/home.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TokenInterceptor} from "./_interceptors/token.interceptor";
 import {ErrorInterceptor} from "./_interceptors/error.interceptor";
 import { LinkGoogleComponent } from './auth/link-google/link-google.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { PasswordValidateComponent } from './auth/password-validate/password-validate.component';
 
 @NgModule({
   declarations: [
@@ -25,9 +27,11 @@ import { LinkGoogleComponent } from './auth/link-google/link-google.component';
     AuthComponent,
     LoginComponent,
     SignupComponent,
-    ResetPasswordComponent,
+    ResetPasswordRequestComponent,
     HomeComponent,
-    LinkGoogleComponent
+    LinkGoogleComponent,
+    ResetPasswordComponent,
+    PasswordValidateComponent
   ],
   imports: [
     BrowserModule,

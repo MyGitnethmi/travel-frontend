@@ -1,0 +1,14 @@
+// email header template
+
+mixin header(first_name, last_name, avatar)
+    tr(style="background: rgb(230, 245, 230); border: 2px solid rgb(195, 230, 200);")
+        td(style="text-align: left; padding: 10px;")
+            img(src="http://localhost:3000/public/logo.png" alt="Go" style="height: 45px; width: 40px")
+        td(style="text-align: right; padding: 10px")
+            table(style="width: 100%")
+                tr
+                    td(style="text-align: right")
+                        p(style="font-size: 18px") #{first_name} #{last_name},
+
+                    td(style="width: 50px; text-align: center")
+                        img(src=avatar alt=first_name style="width: 40px; height: 40px; border-radius: 50%; border: 3px solid #c8c8c8")

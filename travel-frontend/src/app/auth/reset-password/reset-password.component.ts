@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import {environment} from "../../../environments/environment.prod";
+import {CustomValidatorsService} from "../../_services/custom-validators.service";
 import {AuthService} from "../../_services/auth.service";
 
 @Component({
@@ -15,42 +17,62 @@ export class ResetPasswordComponent implements OnInit {
   error: string = '';
   progress: boolean = false;
 
-  emailSent: boolean = false;
+  token: string = '';
 
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
 
-    let email;
-    this.route.params.subscribe(params => email = params?.email);
+    this.route.params.subscribe(params => {
+      if (params?.token) {
+        this.token = params.token
+      } else {
+        router.navigate(['../login'], {relativeTo: this.route});
+      }
+    });
 
     this.passwordResetForm = this.formBuilder.group({
-      username: [email, [Validators.required, Validators.email]],
-    });
+      username: ['', [Validators.required, Validators.email]],
+      newPassword: ['', [Validators.required, Validators.pattern(environment.passwordValidator)]],
+      confirmPassword: ['', [Validators.required]]
+    }, {validators: CustomValidatorsService.passwordValidator()});
+
   }
 
   ngOnInit(): void {
   }
 
-  sendPasswordResetEmail(): void {
+  resetPassword(): void {
     this.error = '';
-    if (this.passwordResetForm.valid) {
+    if (this.passwordResetForm.valid && this.token) {
       this.progress = true;
-      this.auth.sendPasswordResetEmail(this.username?.value).subscribe(
+      const data = {
+        username: this.username?.value,
+        password: this.newPassword?.value,
+        token: this.token
+      }
+      this.auth.resetPassword(data).subscribe(
         () => {
-          this.emailSent = true;
+          this.router.navigate(['/']);
         },
-        error => {
-          this.error = error.message;
-        }
-      ).add(() => this.progress = false);
+        error => this.error = error.message
+      );
     }
   }
 
   get username(): AbstractControl | null {
     return this.passwordResetForm.get('username');
+  }
+
+  get newPassword(): AbstractControl | null {
+    return this.passwordResetForm.get('newPassword');
+  }
+
+  get confirmPassword(): AbstractControl | null {
+    return this.passwordResetForm.get('confirmPassword');
   }
 
 }
