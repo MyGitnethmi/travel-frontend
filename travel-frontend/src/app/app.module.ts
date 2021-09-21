@@ -22,6 +22,7 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
 import { PasswordValidateComponent } from './auth/password-validate/password-validate.component';
 import { HeaderComponent } from './home/header/header.component';
 import { FooterComponent } from './home/footer/footer.component';
+import { SearchComponent } from './home/search/search.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { FooterComponent } from './home/footer/footer.component';
     ResetPasswordComponent,
     PasswordValidateComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

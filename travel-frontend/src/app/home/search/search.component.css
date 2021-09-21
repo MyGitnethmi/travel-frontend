@@ -1,0 +1,6 @@
+.search {
+  padding: 50px;
+  display: flex;
+  flex-direction: row;
+  background: rgb(245, 245, 245);
+}
