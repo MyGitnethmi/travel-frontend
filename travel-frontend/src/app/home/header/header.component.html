@@ -1,19 +1,19 @@
-<div class="header flex-row" [class.header-hide]="scrollDown" [class.header-display]="!scrollDown">
+<div class="header" [class.header-hide]="scrollDown" [class.header-display]="!scrollDown">
 
-  <a href="/" style="cursor: pointer">
+  <a href="/" style="cursor: pointer; margin-right: 10px">
     <img src="./assets/images/brand.png" alt="Logo" style="height: 40px;"/>
   </a>
 
-  <a class="mx-5 navigation-link">Hotels</a>
+  <div class="navigation-link">Hotels</div>
 
-  <a class="mr-5 navigation-link">Restaurants</a>
+  <div class="navigation-link">Restaurants</div>
 
-  <div class="float-end" *ngIf="!isLoggedIn()">
-    <button mat-flat-button routerLink="./auth/login" class="mx-1">Log in</button>
-    <button mat-raised-button color="primary" routerLink="./auth/signup" class="mx-1">Sign in</button>
+  <div style="margin-left: auto" *ngIf="!isLoggedIn()">
+    <button mat-flat-button style="border-radius: 20px" routerLink="./auth/login">Log in</button>
+    <button mat-flat-button style="border-radius: 20px" routerLink="./auth/signup">Sign in</button>
   </div>
 
-  <div class="float-end" *ngIf="isLoggedIn()">
+  <div style="margin-left: auto" *ngIf="isLoggedIn()">
     <span class="username">Vishwa Jayasanka</span>
     <img class="rounded-circle avatar" src="./assets/images/default-avatar.png" alt="You"/>
   </div>

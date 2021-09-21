@@ -1,12 +1,16 @@
 .header {
   position: fixed;
+  display: flex;
+  flex-direction: row;
   transition: 0.5s;
   height: 75px;
+  margin-top: 5px;
   padding: 18px;
   width: 100%;
   max-width: 1280px;
   box-shadow: lightgray 0 4px 6px;
   border-radius: 36px;
+  background: white;
 }
 
 @media only screen and (max-width: 1280px) {
@@ -37,6 +41,7 @@
 }
 
 .navigation-link {
+  margin: 10px 20px 10px 20px;
   color: black;
   font-weight: 550;
   text-decoration: none;

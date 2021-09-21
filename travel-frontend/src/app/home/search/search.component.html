@@ -1,7 +1,16 @@
 <div class="search">
 
-  <input type="text" placeholder="Colombo" />
+  <h1 style="font-size: 32px; font-weight: 550; margin-bottom: 10px;">Find Great Places</h1>
+  <p class="text-secondary">Discover more of your destination and make the most of your trip</p>
 
-  <button>Search</button>
+  <div class="flex-horizontal w-100 mt-4" style="border: 4px solid lightgray">
+    <div class="flex-horizontal bg-white" style="width: 100%">
+      <div style="width: 50px">
+        <mat-icon style="margin: 9px; font-size: 32px">search</mat-icon>
+      </div>
+      <input type="text" placeholder="Destinations, Hotels, Restaurants..." class="input-field" [formControl]="search"/>
+    </div>
+    <button class="search-button">Search</button>
+  </div>
 
 </div>
