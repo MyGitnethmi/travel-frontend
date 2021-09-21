@@ -43,6 +43,7 @@ UserSchema.methods.generateJWT = function () {
   return jwt.sign({
     id: this._id,
     username: this.username,
+    role: this.role,
     timestamp
   }, secret);
 }
@@ -83,5 +84,25 @@ UserSchema.methods.setAvatar = function (base64Image) {
 
 }
 
+UserSchema.methods.resetPassword = function (password, callback) {
+
+  const token = this.auth.token;
+
+  if (!this.auth.token) {
+    return callback("No password reset request have been received for this account..!", null);
+  }
+
+  const payload = jwt.decode(token, secret);
+
+  if (+new Date() - payload.timestamp > 300_000) {
+    return callback("Password reset request has timed out..!", null);
+  }
+
+  this.setPassword(password);
+  this.auth.token = '';
+
+  callback(null, "Password successfully updated..!");
+
+}
 
 mongoose.model('User', UserSchema);

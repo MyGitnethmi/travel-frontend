@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {environment} from "../../../environments/environment.prod";
 import {CustomValidatorsService} from "../../_services/custom-validators.service";
 import {AuthService} from "../../_services/auth.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-reset-password',
@@ -23,7 +24,8 @@ export class ResetPasswordComponent implements OnInit {
     private auth: AuthService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
 
     this.route.params.subscribe(params => {
@@ -56,10 +58,12 @@ export class ResetPasswordComponent implements OnInit {
       }
       this.auth.resetPassword(data).subscribe(
         () => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/']).then(() => {
+            this.snackBar.open("Password reset successfully..!", "Close", {duration: 3000});
+          });
         },
         error => this.error = error.message
-      );
+      ).add(() => this.progress = false);
     }
   }
 

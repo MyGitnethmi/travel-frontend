@@ -20,6 +20,8 @@ import {ErrorInterceptor} from "./_interceptors/error.interceptor";
 import { LinkGoogleComponent } from './auth/link-google/link-google.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { PasswordValidateComponent } from './auth/password-validate/password-validate.component';
+import { HeaderComponent } from './home/header/header.component';
+import { FooterComponent } from './home/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { PasswordValidateComponent } from './auth/password-validate/password-val
     HomeComponent,
     LinkGoogleComponent,
     ResetPasswordComponent,
-    PasswordValidateComponent
+    PasswordValidateComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

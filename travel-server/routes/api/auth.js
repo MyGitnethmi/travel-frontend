@@ -312,16 +312,32 @@ router.post('/reset-password', async (request, response) => {
 
   try {
 
-    const user = await User.findOne({username: userData.username, 'auth.token': userData.token});
+    const user = await User.findOne({username: userData.username});
 
     if (!user) {
       return response.status(401).send({
         status: false,
-        message: 'Username does not match the requested account username'
+        message: 'Username does not match the requested account username..!'
       });
     }
 
-    // Validate token
+    user.resetPassword(userData.password, async (error, result) => {
+
+      if (error) {
+        return response.status(401).send({
+          status: false,
+          message: error
+        });
+      }
+
+      await user.save();
+
+      response.status(200).send({
+        status: true,
+        message: result
+      })
+
+    });
 
   } catch (error) {
     response.status(500).send({
