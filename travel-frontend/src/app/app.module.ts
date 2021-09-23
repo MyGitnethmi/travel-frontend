@@ -12,17 +12,16 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from "./_material/material.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SignupComponent} from './auth/signup/signup.component';
-import {ResetPasswordRequestComponent} from './auth/reset-password-request/reset-password-request.component';
+import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
 import {HomeComponent} from './home/home.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TokenInterceptor} from "./_interceptors/token.interceptor";
 import {ErrorInterceptor} from "./_interceptors/error.interceptor";
-import { LinkGoogleComponent } from './auth/link-google/link-google.component';
-import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
-import { PasswordValidateComponent } from './auth/password-validate/password-validate.component';
-import { HeaderComponent } from './home/header/header.component';
-import { FooterComponent } from './home/footer/footer.component';
-import { SearchComponent } from './home/search/search.component';
+import {UserComponent} from "./home/user/user.component";
+import {ResetPasswordRequestComponent} from "./auth/reset-password-request/reset-password-request.component";
+import {PasswordValidateComponent} from "./auth/password-validate/password-validate.component";
+import {LinkGoogleComponent} from "./auth/link-google/link-google.component";
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -30,14 +29,12 @@ import { SearchComponent } from './home/search/search.component';
     AuthComponent,
     LoginComponent,
     SignupComponent,
-    ResetPasswordRequestComponent,
-    HomeComponent,
-    LinkGoogleComponent,
     ResetPasswordComponent,
+    HomeComponent,
+    UserComponent,
+    ResetPasswordRequestComponent,
     PasswordValidateComponent,
-    HeaderComponent,
-    FooterComponent,
-    SearchComponent
+    LinkGoogleComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +47,7 @@ import { SearchComponent } from './home/search/search.component';
     HttpClientModule
   ],
   providers: [
+    DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

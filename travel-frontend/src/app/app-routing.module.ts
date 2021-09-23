@@ -7,11 +7,19 @@ import {ResetPasswordRequestComponent} from "./auth/reset-password-request/reset
 import {LinkGoogleComponent} from "./auth/link-google/link-google.component";
 import {HomeComponent} from "./home/home.component";
 import {ResetPasswordComponent} from "./auth/reset-password/reset-password.component";
+import {UserComponent} from "./home/user/user.component";
+
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    children: [
+      {
+        path: 'user',
+        component: UserComponent
+      }
+    ]
   },
   {
     path: 'auth',
