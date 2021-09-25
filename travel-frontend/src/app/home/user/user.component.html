@@ -6,143 +6,80 @@
       <mat-card-title>Info</mat-card-title>
       <mat-card-subtitle>Vishwa Jayasankha</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
       <div style="display: flex; flex-direction: row">
-        <img src="./assets/images/logo.png" alt="Profile Picture" style="margin: 0 auto" class="border border-4 rounded rounded-circle"/>
-      </div>
-      <div class="my-3">
-      </div>
+        <img [src]="imageSrc" alt="Profile Picture" style="margin: 0 auto" width="300px" height="300px" class="border border-4 rounded rounded-circle"/>
+        <mat-card-actions>
+                <div class="col-12">
 
-    </mat-card-content>
+                    <input multiple type="file" accept="image/*"
+                           id="selectedFile" style="display: none" (change)="changeFiles($event)">
+                    <br>
+                    <br>
+
+                    <div class="main-wrap-for-selected-images">
+
+                      <img *ngIf="urls[0]!=null" [src]="urls[0]" alt="Image"
+                           class="selected-image img-thumbnail">
+                      <img *ngIf="urls[1]!=null" [src]="urls[1]" alt="Image"
+                           class="selected-image img-thumbnail">
+                      <img *ngIf="urls[2]!=null" [src]="urls[2]" alt="Image"
+                           class="selected-image img-thumbnail">
+
+                    </div>
+                  </div>
+          <button mat-button color="primary" onclick="document.getElementById('selectedFile').click()">Edit</button>
+                </mat-card-actions>
+      </div>
   </mat-card>
-
-
-
-<!--  <mat-accordion style="margin: 10px auto; max-width: 750px">-->
-<!--    <mat-expansion-panel>-->
-<!--      <mat-expansion-panel-header>-->
-<!--        <mat-card-header>-->
-<!--          <div mat-card-avatar class="example-header-image"></div>-->
-<!--          <mat-panel-title><b>Info</b></mat-panel-title>-->
-<!--        </mat-card-header>-->
-<!--      </mat-expansion-panel-header>-->
-<!--      <mat-card-content>-->
-<!--        <p>-->
-<!--          The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.-->
-<!--          A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally-->
-<!--          bred for hunting.-->
-<!--        </p>-->
-<!--      </mat-card-content>-->
-<!--      <mat-card-actions>-->
-<!--        <div class="col-12">-->
-
-<!--          <input multiple type="file" accept="image/*"-->
-<!--                 id="selectedFile" style="display: none" (change)="changeFiles($event)">-->
-<!--          <br>-->
-<!--          <br>-->
-
-<!--          <div class="main-wrap-for-selected-images">-->
-
-<!--            <img *ngIf="urls[0]!=null" [src]="urls[0]" alt="Image"-->
-<!--                 class="selected-image img-thumbnail">-->
-<!--            <img *ngIf="urls[1]!=null" [src]="urls[1]" alt="Image"-->
-<!--                 class="selected-image img-thumbnail">-->
-<!--            <img *ngIf="urls[2]!=null" [src]="urls[2]" alt="Image"-->
-<!--                 class="selected-image img-thumbnail">-->
-
-<!--          </div>-->
-<!--        </div>-->
-<!--        <button mat-button color="primary" onclick="document.getElementById('selectedFile').click()">Edit</button>-->
-<!--      </mat-card-actions>-->
-
-<!--    </mat-expansion-panel>-->
-
-<!--  </mat-accordion>-->
-
-
-  <mat-accordion class="example-headers-align" style="margin: 10px auto; max-width: 750px; width: 100%">
-    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
+  <div class="example-headers-align" style="margin: 10px auto; max-width: 750px; width: 100%">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
           Personal data
-        </mat-panel-title>
-        <mat-panel-description>
-          Type your name age email
+        </mat-card-title>
+        <mat-card-header>
           <mat-icon>account_circle</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
+        </mat-card-header>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+<br>
       <mat-form-field appearance="fill">
         <mat-label>First name</mat-label>
         <input matInput>
       </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Age</mat-label>
-        <input matInput type="number" min="1">
-      </mat-form-field>
+      <mat-divider></mat-divider>
+     <br>
+      <br>
       <mat-form-field appearance="fill">
         <mat-label>Enter your email</mat-label>
         <input matInput placeholder="pat@example.com" [formControl]="email" required>
         <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
-      <mat-action-row>
-        <button mat-button color="primary" (click)="nextStep()">Next</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
+      <mat-divider></mat-divider>
+      <br>
+     <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Country or Region</mat-label>
+        <input matInput>
+      </mat-form-field>
+    </mat-card>
+  </div>
+  <div class="example-headers-align" style="margin: 10px auto; max-width: 750px; width: 100%">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
           Destination
-        </mat-panel-title>
-        <mat-panel-description>
-          Type the country name
+        </mat-card-title>
+        <mat-card-header>
           <mat-icon>map</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+        </mat-card-header>
+      </mat-card-header>
 
       <mat-form-field appearance="fill">
         <mat-label>Country</mat-label>
         <input matInput>
       </mat-form-field>
-
-      <mat-action-row>
-        <button mat-button color="warn" (click)="prevStep()">Previous</button>
-        <button mat-button color="primary" (click)="nextStep()">Next</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Day of the trip
-        </mat-panel-title>
-        <mat-panel-description>
-          Inform the date you wish to travel
-          <mat-icon>date_range</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-<!--      <mat-form-field appearance="fill">-->
-<!--        <mat-label>Date</mat-label>-->
-<!--        <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>-->
-<!--      </mat-form-field>-->
-<!--      <mat-datepicker #picker></mat-datepicker>-->
-
-      <mat-action-row>
-        <button mat-button color="warn" (click)="prevStep()">Previous</button>
-        <button mat-button color="primary" (click)="nextStep()">End</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-
-  </mat-accordion>
-
+    </mat-card>
 </div>
 
-<!--<br>-->
-<!--<br>-->
-
-<!--</mat-card>-->
-
-
+</div>

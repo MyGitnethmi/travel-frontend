@@ -10,6 +10,7 @@ import {FormControl, Validators} from "@angular/forms";
 export class UserComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
   panelOpenState = false;
+  imageSrc = "./assets/images/logo.png";
 
   urls = new Array<string>();
   filesToUpload: Array<File> = [];
@@ -43,6 +44,7 @@ export class UserComponent implements OnInit {
 
 
   selectedFile = null;
+  // document.getElementById('selectedFile').click()
 
   onFileSelected(event:any) {
     this.selectedFile=event.target.files[0];
@@ -55,6 +57,12 @@ export class UserComponent implements OnInit {
   uploadRoomData() {
 
   }
+
+  onImageUpload(){
+    console.log("Image up" )
+
+  }
+
 
   changeFiles(event: any){
 
@@ -71,7 +79,9 @@ export class UserComponent implements OnInit {
               this.filesToUpload = [];
               return;
             } else {
-              this.urls.push(e.target.result);
+              // this.urls.push(e.target.result);
+              this.imageSrc = e.target.result;
+              console.log(e.target);
             }
           } else {
             alert('Supported formats: .JPEG .JPG .PNG');
