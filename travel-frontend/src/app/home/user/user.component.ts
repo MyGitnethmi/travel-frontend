@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+
+
 
 
 @Component({
@@ -9,11 +11,32 @@ import {FormControl, Validators} from "@angular/forms";
 })
 export class UserComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
-  panelOpenState = false;
+  phoneNum= new FormControl('',[Validators.required, Validators.pattern("(09)[0-9 ]{9}")]);
   imageSrc = "./assets/images/logo.png";
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
 
   urls = new Array<string>();
   filesToUpload: Array<File> = [];
+
+  constructor(
+    private _formBuilder: FormBuilder
+  ) {
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required, Validators.pattern("[0-9 ]{12}")]
+    });
+  }
+
+  getErrorNumber(){
+    if (this.phoneNum.hasError('required')){
+      return 'You must enter a value';
+    }
+    return this.phoneNum.hasError('phoneNum') ? 'Not a valid phoneNum' : '';
+  }
 
   getErrorMessage() {
     if (this.email.hasError('required')) {
@@ -22,48 +45,18 @@ export class UserComponent implements OnInit {
 
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
-  step = 0;
-
-  setStep(index: number) {
-    this.step = index;
-  }
-
-  nextStep() {
-    this.step++;
-  }
-
-  prevStep() {
-    this.step--;
-  }
-  constructor() {
+  ngOnInit() {
 
   }
-
-  ngOnInit(): void {
-  }
-
 
   selectedFile = null;
-  // document.getElementById('selectedFile').click()
-
-  onFileSelected(event:any) {
+    onFileSelected(event:any) {
     this.selectedFile=event.target.files[0];
   }
-
-  onUpload() {
-
-  }
-
-  uploadRoomData() {
-
-  }
-
   onImageUpload(){
     console.log("Image up" )
 
   }
-
-
   changeFiles(event: any){
 
     this.filesToUpload = event.target.files as Array<File>;
@@ -79,7 +72,6 @@ export class UserComponent implements OnInit {
               this.filesToUpload = [];
               return;
             } else {
-              // this.urls.push(e.target.result);
               this.imageSrc = e.target.result;
               console.log(e.target);
             }

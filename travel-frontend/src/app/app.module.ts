@@ -22,6 +22,7 @@ import {ResetPasswordRequestComponent} from "./auth/reset-password-request/reset
 import {PasswordValidateComponent} from "./auth/password-validate/password-validate.component";
 import {LinkGoogleComponent} from "./auth/link-google/link-google.component";
 import {DatePipe} from "@angular/common";
+import {MatStepperModule} from "@angular/material/stepper";
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {DatePipe} from "@angular/common";
     FormsModule,
     ReactiveFormsModule,
     SocialLoginModule,
-    HttpClientModule
+    HttpClientModule,
+    MatStepperModule
   ],
   providers: [
     DatePipe,
